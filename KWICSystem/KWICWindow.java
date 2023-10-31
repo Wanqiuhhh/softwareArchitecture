@@ -37,11 +37,12 @@ public class KWICWindow {
         frame.getContentPane().add(inputTextArea);
 
         outputTextArea = new JTextArea();
-        outputTextArea.setBounds(10, 150, 414, 300);
+        outputTextArea.setBounds(10, 150, 414, 400);
+        outputTextArea.setLineWrap(true); // 启用自动换行
         frame.getContentPane().add(outputTextArea);
 
         architectureComboBox = new JComboBox<String>();
-        architectureComboBox.setBounds(10, 450, 150, 20);
+        architectureComboBox.setBounds(10, 550, 150, 20);
         architectureComboBox.addItem("Main-Sub");
         architectureComboBox.addItem("Object-Oriented");
         architectureComboBox.addItem("Event");
@@ -49,7 +50,7 @@ public class KWICWindow {
         frame.getContentPane().add(architectureComboBox);
 
         importButton = new JButton("Import");
-        importButton.setBounds(170, 450, 89, 23);
+        importButton.setBounds(170, 550, 89, 23);
         importButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 importFile();
@@ -102,13 +103,17 @@ public class KWICWindow {
         String processedText = "";
 
         if (architecture.equals("Main-Sub")) {
-            processedText = MainSubSystem.process(fileName);
+            processedText = "主程序-子程序风格是结构化程序设计的一种典型风格从功能的观点设计系统，通过逐步分解和细化，形成整个系统的体系结构。"+"\n";
+            processedText = processedText+MainSubSystem.process(fileName);
         } else if (architecture.equals("Object-Oriented")) {
-            processedText = KWICSystem.ObjectOrientedSystem.process.process(fileName);
+            processedText = "面向对象风格建立在数据抽象和面向对象的基础上，数据的表示方法和它们的相应操作封装在一个抽象数据类型或对象中"+"\n";
+            processedText = processedText+KWICSystem.ObjectOrientedSystem.process.process(fileName);
         } else if (architecture.equals("Event")) {
-            processedText = KWICSystem.EventSystem.Process.process(fileName);
+            processedText = "基于事件的隐式调用风格的思想是构件不直接调用一个过程，而是触发或广播一个或多个事件"+"\n";
+            processedText = processedText+KWICSystem.EventSystem.Process.process(fileName);
         } else if (architecture.equals("Pipeline")) {
-            processedText = KWICSystem.PipelineSystem.Process.process(fileName);
+            processedText = "在管道/过滤器风格的软件体系结构中，每个构件都有一组输入和输出，构件读输入的数据流，经过内部处理，然后产生输出数据流。"+"\n";
+            processedText = processedText+KWICSystem.PipelineSystem.Process.process(fileName);
         }
         outputTextArea.setText(processedText);
     }
