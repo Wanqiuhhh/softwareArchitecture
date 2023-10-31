@@ -10,42 +10,32 @@ public class Client {
         System.out.println("个人通讯录");
 
         while (true) {
-            System.out.println("1、查看联系人信息      2、添加新的联系人   " + "3、修改联系人信息    4、删除联系人     5、退出");
+            System.out.println("1、查看联系人信息    2、添加新的联系人    3、修改联系人信息    4、删除联系人     5、退出");
 
             @SuppressWarnings("resource")
             Scanner input = new Scanner(System.in);
-            int op = input.nextInt();
+            int choose = input.nextInt();
 
-            if (op == 5)
+            if (choose == 5){
+                System.out.println("退出通讯录");
                 break;
-            else if (op < 5) {
-                if (op == 1) {
-                    System.out.println("输入联系人姓名或电话");
-
-                    // String q = input.next();
-                    String op2 = input.next();
-
-                    Server jdbc = new Server();
-
-                    ResultSet rs1 = jdbc.select_name(op2);
-                    ResultSet rs2 = jdbc.select_phone(op2);
-
-                    System.out.println("系统id		用户名		电话");
-
-                    if (rs1 != null) {
-                        while (rs1.next()) {
-                            System.out.println(
-                                    rs1.getString(1) + "		" + rs1.getString(2) + "	" + rs1.getString(3));
-                        }
-                    }
-                    if (rs2 != null) {
-                        while (rs2.next()) {
-                            System.out.println(
-                                    rs2.getString(1) + "		" + rs2.getString(2) + "		" + rs2.getString(3));
-                        }
+            }
+            else if (choose < 5) {
+                if (choose == 1) {
+                    System.out.println("输入联系人姓名");
+                    String inputData = input.next();
+                    Server server = new Server();
+                    ResultSet rs = server.select_name(inputData);
+                    if (rs.next()) {
+                        System.out.println("id	  姓名	  地址    电话");
+                        do {
+                            System.out.println(rs.getInt(1) + "    " + rs.getString(2) + "    " + rs.getString(3)+"    "+rs.getString(4));
+                        }while (rs.next());
+                    }else {
+                        System.out.println("查不到此人");
                     }
                 }
-                if (op == 2) {
+                if (choose == 2) {
                     System.out.println("输入联系人姓名、地址和电话");
 
                     String name, address,phone;
@@ -53,40 +43,40 @@ public class Client {
                     address = input.next();
                     phone = input.next();
 
-                    Server jdbc = new Server();
+                    Server server = new Server();
 
-                    if (jdbc.insert(name, address,phone)) {
+                    if (server.insert(name, address,phone)) {
                         System.out.println("添加成功");
                     } else {
                         System.out.println("添加失败");
                     }
                 }
-                if (op == 3) {
+                if (choose == 3) {
                     System.out.println("输入要修改联系人姓名：");
-                    String op2 = input.next();
+                    String inputData = input.next();
 
                     System.out.println("输入要修改的内容(1、name, 2、phone，3、address):");
-                    int bool = input.nextInt();
+                    int number = input.nextInt();
 
                     System.out.println("输入修改后的值");
-                    String op3 = input.next();
+                    String modifyData = input.next();
 
-                    Server jdbc = new Server();
-                    if (bool == 1)
-                        jdbc.update_name(op2, op3);
-                    if (bool == 2)
-                        jdbc.update_phone(op2, op3);
-                    if(bool == 3){
-                        jdbc.update_address(op2,op3);
+                    Server server = new Server();
+                    if (number == 1)
+                        server.update_name(inputData, modifyData);
+                    if (number == 2)
+                        server.update_phone(inputData, modifyData);
+                    if(number == 3){
+                        server.update_address(inputData,modifyData);
                     }
                 }
-                if (op == 4) {
-                    System.out.println("输入要删除的系统id");
-                    int op2 = input.nextInt();
+                if (choose == 4) {
+                    System.out.println("输入要删除的联系人姓名：");
+                    String inputNumber = input.next();
 
-                    Server jdbc = new Server();
+                    Server server = new Server();
 
-                    if (jdbc.delete(op2)) {
+                    if (server.delete(inputNumber)) {
                         System.out.println("删除成功");
                     } else {
                         System.out.println("删除失败");

@@ -1,9 +1,7 @@
 package secondCSStructure;
 
-import org.junit.Test;
 
 import java.sql.*;
-
 public class Server {
     private Connection con;
     private String driver = "com.mysql.cj.jdbc.Driver";
@@ -29,6 +27,7 @@ public class Server {
         try {
             con.close();
         } catch (SQLException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -39,18 +38,6 @@ public class Server {
 
         PreparedStatement pstmt = con.prepareStatement(sql);
         pstmt.setString(1, name);
-
-        ResultSet rs = pstmt.executeQuery();
-
-        return rs;
-    }
-
-    // 查询根据电话号码
-    public ResultSet select_phone(String phone) throws SQLException {
-        String sql = "select * from personinformation where phoneNumber = ?";
-
-        PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setString(1, phone);
 
         ResultSet rs = pstmt.executeQuery();
 
@@ -72,7 +59,6 @@ public class Server {
 
             return true;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return false;
         }
@@ -90,7 +76,6 @@ public class Server {
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -108,7 +93,6 @@ public class Server {
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -125,35 +109,25 @@ public class Server {
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    // 删除
-    public Boolean delete(int id) {
-        String sql = "delete from personinformation where id=?";
+    // 删除联系人
+    public Boolean delete(String name) {
+        String sql = "delete from personinformation where name=?";
 
         PreparedStatement pstmt;
         try {
             pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, id);
+            pstmt.setString(1, name);
 
             pstmt.executeUpdate();
 
             return true;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return false;
         }
-    }
-
-    @Test
-    public void test1() throws Exception { // 下面方法有不同的异常，我直接抛出一个大的异常
-        Server j = new Server();
-
-        j.delete(3);
-
     }
 }
