@@ -1,15 +1,18 @@
-package secondCSStructure;
-
+package thirdCSStructure;
 
 import java.sql.*;
-public class Server {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Data {
+    private List<Contact> contacts = new ArrayList<Contact>();
     private Connection con;
     private String driver = "com.mysql.cj.jdbc.Driver";
     private String userName = "root";
     private String password = "abc123";
     private String url = "jdbc:mysql://localhost:3306/personaladdressbook";
 
-    public Server() {
+    public Data() {
 
         try {
             Class.forName(driver);
@@ -33,25 +36,29 @@ public class Server {
     }
 
     // 查询根据名字
-    public ResultSet select_name(String name) throws SQLException {
+    public ResultSet select_name(String name) {
         String sql = "select * from personinformation where contactName = ?";
 
-        PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setString(1, name);
-
-        ResultSet rs = pstmt.executeQuery();
-
+        PreparedStatement pstmt;
+        ResultSet rs = null;
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, name);
+            rs = pstmt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return rs;
     }
 
     // 新增
-    public Boolean insert(String contactName, String address,String phone) {
+    public Boolean insert(String name, String address,String phone) {
         String sql = "insert into personinformation (contactName, address, phoneNumber) VALUES (?, ?, ?)";
 
         PreparedStatement pstmt;
         try {
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, contactName);
+            pstmt.setString(1, name);
             pstmt.setString(2, address);
             pstmt.setString(3, phone);
 

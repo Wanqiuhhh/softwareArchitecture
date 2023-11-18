@@ -1,12 +1,15 @@
-package secondCSStructure;
+package thirdCSStructure;
+
+import secondCSStructure.Server;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class Client {
+public class User {
     public static void main(String args[]) throws SQLException {
         System.out.println("欢迎使用个人通讯录系统！");
+        Business business = new Business();
 
         while (true) {
             System.out.println("1、查看联系人信息    2、添加新的联系人    3、修改联系人信息    4、删除联系人     0、退出");
@@ -21,15 +24,15 @@ public class Client {
                 case 1:
                     System.out.println("输入联系人姓名");
                     String inputData1 = input.next();
-                    Server server1 = new Server();
-                    ResultSet rs = server1.select_name(inputData1);
+                    //Server server1 = new Server();
+                    ResultSet rs = business.viewContactByName(inputData1);
                     if (rs.next()) {
                         System.out.println("姓名	  地址    电话");
                         do {
                             System.out.println(rs.getString(1) + "    " + rs.getString(2)+"    "+rs.getString(3));
                         }while (rs.next());
                     }else {
-                        System.out.println("查不到此人");
+                        System.out.println("查无此人");
                     }
                     break;
                 case 2:
@@ -40,9 +43,9 @@ public class Client {
                     address = input.next();
                     phone = input.next();
 
-                    Server server2 = new Server();
+                    //Server server2 = new Server();
 
-                    if (server2.insert(name, address,phone)) {
+                    if (business.addContact(name, address,phone)) {
                         System.out.println("添加成功");
                     } else {
                         System.out.println("添加失败");
@@ -58,22 +61,22 @@ public class Client {
                     System.out.println("输入修改后的值");
                     String modifyData = input.next();
 
-                    Server server3 = new Server();
+                    //Server server3 = new Server();
                     if (number == 1)
-                        server3.update_name(inputData3, modifyData);
+                        business.updateContactName(inputData3, modifyData);
                     if (number == 2)
-                        server3.update_phone(inputData3, modifyData);
+                        business.updateContactPhone(inputData3, modifyData);
                     if(number == 3){
-                        server3.update_address(inputData3,modifyData);
+                        business.updateContactAddress(inputData3,modifyData);
                     }
                     break;
                 case 4:
                     System.out.println("输入要删除的联系人姓名：");
                     String inputNumber = input.next();
 
-                    Server server4 = new Server();
+                    //Server server4 = new Server();
 
-                    if (server4.delete(inputNumber)) {
+                    if (business.deleteContact(inputNumber)) {
                         System.out.println("删除成功");
                     } else {
                         System.out.println("删除失败");
