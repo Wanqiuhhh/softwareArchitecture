@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mybatis-3-mapper.dtd:约束文件的名称，限制和检查在当前文件中出现的标签和属性符合mybatis的要求-->
+<!--namespace：命名空间，要有唯一的值，要求使用dao接口的权限定名称（一个dao接口对应一个mapper，namespace指明对应哪个dao接口）-->
+<mapper namespace="com.example.bs.Dao.ContactDao">
+    <!-- 所有的数据库操作都要写在mapper标签中，可以使用特定的标签表示数据库中的特定操作 -->
+    <resultMap id="BaseResultMap" type="com.example.bs.entity.Contact">
+        <result column="contactName" jdbcType="VARCHAR" property="contactName" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        contactName,address,phoneNumber
+    </sql>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from personinformation
+    </select>
+    <update id="updateByName" parameterType="com.example.bs.entity.Contact">
+        update personinformation
+        <set>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where contactName = #{contactName,jdbcType=VARCHAR}
+    </update>
+    <select id="selectByName" parameterType="java.lang.String" resultType="com.example.bs.entity.Contact">
+        select
+        <include refid="Base_Column_List" />
+        from personinformation
+        where contactName = #{contactName,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByName" parameterType="java.lang.String">
+        delete from personinformation
+        where contactName = #{contactName,jdbcType=VARCHAR}
+    </delete>
+    <insert id="addContact" parameterType="com.example.bs.entity.Contact">
+        insert into personinformation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contactName != null">
+                contactName,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="phoneNumber != null">
+                phoneNumber,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="contactName != null">
+                #{contactName,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>
